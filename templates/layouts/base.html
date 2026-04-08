@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Book Haven | Home</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700&family=Manrope:wght@400;500;700&display=swap" rel="stylesheet" />
+    <style>
+        :root {
+            --bg: #fdfbf7;
+            --ink: #1f1b16;
+            --muted: #665f56;
+            --card: #ffffff;
+            --accent: #b4492e;
+            --accent-deep: #8f3320;
+            --line: #e8e1d6;
+            --glow: #f3c56a;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: "Manrope", sans-serif;
+            background: 
+                radial-gradient(circle at 0% 0%, rgba(243, 197, 106, 0.15), transparent 25%),
+                radial-gradient(circle at 100% 100%, rgba(180, 73, 46, 0.08), transparent 25%),
+                var(--bg);
+            color: var(--ink);
+            line-height: 1.6;
+        }
+
+        .container { width: min(1200px, 92%); margin: 0 auto; }
+
+        /* --- Navigation --- */
+        header {
+            padding: 1rem 0;
+            border-bottom: 1px solid var(--line);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            position: sticky;
+            top: 0;
+            background: rgba(253, 251, 247, 0.8);
+            z-index: 100;
+        }
+
+        .nav-wrap { display: flex; justify-content: space-between; align-items: center; }
+
+        .brand {
+            font-family: "Cinzel", serif;
+            font-size: 1.6rem;
+            font-weight: 700;
+            color: var(--ink);
+            text-decoration: none;
+        }
+
+        nav ul { list-style: none; display: flex; gap: 1.5rem; }
+        nav a {
+            text-decoration: none;
+            color: var(--muted);
+            font-weight: 600;
+            font-size: 0.95rem;
+            transition: color 0.2s;
+        }
+        nav a:hover { color: var(--accent); }
+
+        /* --- Global Elements --- */
+        .section-title {
+            font-family: "Cinzel", serif;
+            font-size: 2rem;
+            margin: 4rem 0 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .section-title::after {
+            content: "";
+            height: 1px;
+            background: var(--line);
+            flex-grow: 1;
+        }
+
+        /* --- Updated Book Cards --- */
+        .books-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 2rem;
+        }
+
+        .book {
+            background: var(--card);
+            border: 1px solid var(--line);
+            border-radius: 1.2rem;
+            padding: 1.2rem;
+            display: flex;
+            flex-direction: column;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .book:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 40px rgba(34, 25, 14, 0.08);
+            border-color: var(--glow);
+        }
+
+        .book img {
+            width: 100%;
+            height: 320px;
+            object-fit: cover;
+            border-radius: 0.6rem;
+            margin: 1rem 0;
+            background: #f0f0f0;
+        }
+
+        .book h4 { font-family: "Cinzel", serif; font-size: 1.2rem; margin-bottom: 0.5rem; }
+        
+        .book-summary {
+            color: var(--muted);
+            font-size: 0.9rem;
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            margin-bottom: 1rem;
+            flex-grow: 1;
+        }
+
+        .pill {
+            align-self: flex-start;
+            background: rgba(180, 73, 46, 0.08);
+            color: var(--accent-deep);
+            font-weight: 700;
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        footer {
+            margin-top: 5rem;
+            padding: 3rem 0;
+            border-top: 1px solid var(--line);
+            text-align: center;
+            color: var(--muted);
+            font-size: 0.9rem;
+        }
+
+        @media (max-width: 768px) {
+            .nav-wrap { flex-direction: column; gap: 1rem; }
+            .hero { grid-template-columns: 1fr !important; text-align: center; }
+            .hero-card { display: none; } /* Hide featured card on mobile for cleaner look */
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container nav-wrap">
+            <a href="{% url 'books.home' %}" class="brand">Book Haven</a>
+            <nav>
+                <ul>
+                    <li><a href="{% url 'books.home' %}">Home</a></li>
+                    <li><a href="{% url 'authors.index' %}">Authors</a></li>
+                    <li><a href="{% url 'contactUs.index' %}">Contact Us</a></li>
+                    <li><a href="{% url 'aboutUs.index' %}">About Us</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    {% block content %}
+    {% endblock %}
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2026 Book Haven. Crafted for the curious mind.</p>
+        </div>
+    </footer>
+</body>
+</html>

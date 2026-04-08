@@ -1,0 +1,74 @@
+{% extends 'layouts/base.html' %}
+{% block content %}
+{% load static %}
+
+<main class="container">
+    <section class="hero" style="display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; padding: 6rem 0; align-items: center;">
+        <div>
+            <span style="color: var(--accent); font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; font-size: 0.8rem;">Welcome to the Haven</span>
+            <h1 style="font-family: 'Cinzel', serif; font-size: clamp(2.5rem, 5vw, 4rem); line-height: 1.1; margin: 1rem 0 1.5rem;">Stories Worth <br><span style="color: var(--accent);">Staying Up For</span></h1>
+            <p style="color: var(--muted); font-size: 1.1rem; margin-bottom: 2.5rem; max-width: 50ch;">
+                Discover timeless classics and modern masterpieces curated for the truly curious. 
+                Your next favorite journey begins here.
+            </p>
+            <div style="display: flex; gap: 1rem;">
+                <a href="#collection" class="cta" style="background: var(--accent); color: white; padding: 1rem 2rem; border-radius: 50px; text-decoration: none; font-weight: 700; box-shadow: 0 10px 20px rgba(180, 73, 46, 0.2);">Explore Collection</a>
+            </div>
+        </div>
+
+        <article class="hero-card" style="position: relative;">
+            <div style="position: absolute; top: -20px; right: -20px; background: var(--glow); padding: 1rem; border-radius: 50%; width: 80px; height: 80px; display: flex; align-items: center; justify-content: center; font-family: 'Cinzel', serif; font-weight: 700; font-size: 0.7rem; text-align: center; transform: rotate(15deg); box-shadow: 0 5px 15px rgba(0,0,0,0.1);">
+                PICK OF THE WEEK
+            </div>
+            <img src="https://images.unsplash.com/photo-1512820790803-83ca734da794?auto=format&fit=crop&w=900&q=80" 
+                 alt="Featured Book" style="width: 100%; border-radius: 1.5rem; box-shadow: 0 30px 60px rgba(0,0,0,0.12);">
+            <div style="margin-top: 1.5rem;">
+                <h3 style="font-family: 'Cinzel', serif; font-size: 1.4rem;">The Midnight Library</h3>
+                <p style="color: var(--muted);">Matt Haig</p>
+            </div>
+        </article>
+    </section>
+
+    <section>
+        <div class="categories" style="display: flex; gap: 0.8rem; overflow-x: auto; padding: 1rem 0; scrollbar-width: none;">
+            {% for cat in "Fiction,Business,Science,Biography,Mystery,Poetry,History"|make_list %}
+                <span style="white-space: nowrap; border: 1px solid var(--line); padding: 0.6rem 1.2rem; border-radius: 50px; background: white; cursor: pointer; transition: 0.3s;" onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor='var(--line)'">{{ cat }}</span>
+            {% endfor %}
+        </div>
+    </section>
+
+    <section id="collection">
+        <h2 class="section-title">Our Library</h2>
+        <div class="books-grid">
+            {% for book in books %}
+            <article class="book">
+                <span class="pill">Library Edition</span>
+                <div style="height: 320px; overflow: hidden; border-radius: 0.6rem; margin: 1rem 0;">
+                    <img src="{% static 'books/images/'|add:book.image %}" alt="{{ book.title }} cover" style="width: 100%; height: 100%; object-fit: cover;">
+                </div>
+                <h4>{{ book.title }}</h4>
+                <p class="book-summary">{{ book.breif }}</p>
+                <a class="view-more-btn" href="{% url 'books.show' book.id %}" style="text-decoration: none; color: var(--accent); font-weight: 700; font-size: 0.9rem; margin-top: auto; display: flex; align-items: center; gap: 0.5rem;">
+                    Read Details <span style="font-size: 1.2rem;">→</span>
+                </a>
+            </article>
+            {% empty %}
+            <div style="grid-column: 1/-1; text-align: center; padding: 4rem; background: #f0f0f0; border-radius: 1rem;">
+                <p>The shelves are empty for now. Check back soon!</p>
+            </div>
+            {% endfor %}
+        </div>
+    </section>
+
+    <section class="newsletter" style="margin-top: 6rem; background: var(--ink); color: white; padding: 4rem; border-radius: 2rem; display: flex; justify-content: space-between; align-items: center; gap: 2rem;">
+        <div>
+            <h3 style="font-family: 'Cinzel', serif; font-size: 2rem; margin-bottom: 0.5rem;">Join the Reader Circle</h3>
+            <p style="color: #a0988e;">Get hand-picked recommendations delivered to your inbox.</p>
+        </div>
+        <div style="display: flex; gap: 1rem;">
+            <input type="email" placeholder="Enter your email" style="padding: 1rem 1.5rem; border-radius: 50px; border: none; width: 250px;">
+            <button style="background: var(--glow); color: var(--ink); border: none; padding: 1rem 2rem; border-radius: 50px; font-weight: 700; cursor: pointer;">Subscribe</button>
+        </div>
+    </section>
+</main>
+{% endblock %}

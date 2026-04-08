@@ -1,0 +1,216 @@
+{% extends 'layouts/base.html' %}
+{% block content %}
+<style>
+    /* Section Intro Animation */
+    @keyframes fadeInUp {
+        from { opacity: 0; transform: translateY(30px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+
+    .about-page { 
+        padding: 6rem 0; 
+        animation: fadeInUp 0.8s ease-out;
+    }
+
+    /* Hero Branding */
+    .about-hero {
+        display: grid;
+        grid-template-columns: 1.2fr 0.8fr;
+        gap: 4rem;
+        align-items: center;
+        margin-bottom: 8rem;
+    }
+
+    .about-intro-text h1 {
+        font-family: "Cinzel", serif;
+        font-size: clamp(3rem, 6vw, 4.5rem);
+        line-height: 1;
+        margin: 1.5rem 0;
+        color: var(--ink);
+    }
+
+    /* Floating Stats - Glassmorphism Style */
+    .stats-container {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 1rem;
+        margin-top: 3rem;
+    }
+
+    .stat-pill {
+        background: rgba(255, 255, 255, 0.5);
+        backdrop-filter: blur(10px);
+        border: 1px solid var(--line);
+        padding: 1.5rem;
+        border-radius: 1.2rem;
+        text-align: center;
+        transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+
+    .stat-pill:hover {
+        background: var(--card);
+        border-color: var(--glow);
+        transform: scale(1.05);
+        box-shadow: 0 15px 30px rgba(180, 73, 46, 0.1);
+    }
+
+    .stat-pill strong {
+        display: block;
+        font-family: "Cinzel", serif;
+        font-size: 2.2rem;
+        color: var(--accent);
+        margin-bottom: 0.2rem;
+    }
+
+    /* Mission Box - Dark & Elegant */
+    .mission-highlight {
+        background: #1f1b16;
+        background-image: url("https://www.transparenttextures.com/patterns/stardust.png");
+        color: #fff;
+        padding: 4rem;
+        border-radius: 3rem;
+        position: relative;
+        box-shadow: 0 30px 60px rgba(0,0,0,0.2);
+    }
+
+    .mission-highlight h2 {
+        font-family: "Cinzel", serif;
+        font-size: 2.2rem;
+        margin-bottom: 1.5rem;
+        color: var(--glow);
+    }
+
+    /* Values Grid - Modern Cards */
+    .values-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+        gap: 2.5rem;
+        margin-top: 3rem;
+    }
+
+    .value-card {
+        background: var(--card);
+        border: 1px solid var(--line);
+        padding: 3rem;
+        border-radius: 2.5rem;
+        position: relative;
+        transition: all 0.3s ease;
+    }
+
+    .value-card::before {
+        content: "0" attr(data-index);
+        position: absolute;
+        top: 2rem;
+        right: 2rem;
+        font-family: "Cinzel", serif;
+        font-weight: 700;
+        opacity: 0.1;
+        font-size: 3rem;
+    }
+
+    .value-card:hover {
+        border-color: var(--accent);
+        transform: translateY(-10px);
+        box-shadow: 0 25px 50px rgba(57, 43, 25, 0.08);
+    }
+
+    /* Hand-drawn style CTA */
+    .about-cta-footer {
+        margin-top: 8rem;
+        text-align: center;
+        background: #fffaf2;
+        border: 1px solid var(--line);
+        padding: 5rem 2rem;
+        border-radius: 4rem;
+        position: relative;
+    }
+
+    .about-cta-footer::after {
+        content: "✨";
+        position: absolute;
+        top: -20px;
+        left: 50%;
+        transform: translateX(-50%);
+        font-size: 2rem;
+        background: var(--bg);
+        padding: 0 1rem;
+    }
+
+    @media (max-width: 900px) {
+        .about-hero { grid-template-columns: 1fr; gap: 2rem; }
+        .mission-highlight { padding: 2.5rem; }
+        .stats-container { grid-template-columns: 1fr; }
+    }
+</style>
+
+<main class="about-page">
+    <div class="container">
+        <section class="about-hero">
+            <div class="about-intro-text">
+                <span class="section-label" style="color: var(--accent); letter-spacing: 0.3em;">EST. 2026</span>
+                <h1>Crafting <br>the <span style="color: var(--accent); font-style: italic;">Perfect</span> Read.</h1>
+                <p class="about-lead">
+                    Book Haven isn't just a platform; it's a rebellion against the mindless scroll. 
+                    We curate the whispers of history and the shouts of modern genius into a single, 
+                    serene digital sanctuary.
+                </p>
+                
+                <div class="stats-container">
+                    <div class="stat-pill">
+                        <strong>5K+</strong>
+                        <span>Readers</span>
+                    </div>
+                    <div class="stat-pill">
+                        <strong>700+</strong>
+                        <span>Titles</span>
+                    </div>
+                    <div class="stat-pill">
+                        <strong>120+</strong>
+                        <span>Voices</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mission-highlight">
+                <span style="font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.2em; opacity: 0.6;">The Core</span>
+                <h2>Our Mission</h2>
+                <p style="font-size: 1.2rem; font-weight: 300; line-height: 1.8;">
+                    To rescue the human attention span by providing a curated gateway to 
+                    transformative literature. We believe a well-read world is a more empathetic one.
+                </p>
+                <div style="margin-top: 2rem; height: 2px; width: 60px; background: var(--glow);"></div>
+            </div>
+        </section>
+
+        <section class="values-section">
+            <div style="text-align: center; margin-bottom: 4rem;">
+                <span class="section-label">Foundations</span>
+                <h2 style="font-family: 'Cinzel', serif; font-size: 3rem;">Why We Exist</h2>
+            </div>
+            
+            <div class="values-grid">
+                <article class="value-card" data-index="1">
+                    <h3>Curated Quality</h3>
+                    <p>No algorithms, no filler. Every title is hand-selected by humans who actually read them.</p>
+                </article>
+                
+                <article class="value-card" data-index="2">
+                    <h3>Reader First</h3>
+                    <p>Our interface is designed to disappear, leaving nothing between you and the author's intent.</p>
+                </article>
+                
+                <article class="value-card" data-index="3">
+                    <h3>Future of Lit</h3>
+                    <p>Bridging the gap between the smell of old paper and the convenience of the digital era.</p>
+                </article>
+            </div>
+        </section>
+
+        <section class="about-cta-footer">
+            <h2 style="font-family: 'Cinzel', serif; font-size: 2.5rem; margin-bottom: 1.5rem;">Join the Sanctuary.</h2>
+            <p style="color: var(--muted); margin-bottom: 2.5rem; font-size: 1.1rem;">Your next great intellectual adventure is one click away.</p>
+            <a href="{% url 'books.home' %}" class="cta" style="padding: 1.2rem 3.5rem; border-radius: 10px; font-size: 1.1rem; box-shadow: 0 10px 20px rgba(180, 73, 46, 0.2);">Explore the Library</a>
+        </section>
+    </div>
+</main>
+{% endblock %}

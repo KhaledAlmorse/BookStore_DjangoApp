@@ -1,0 +1,251 @@
+{% extends 'layouts/base.html' %}
+{% block content %}
+<style>
+    .contact-page {
+        padding: 4rem 0 6rem;
+    }
+
+    .contact-hero {
+        display: grid;
+        grid-template-columns: 1fr 1.2fr;
+        gap: 2.5rem;
+        align-items: start;
+        margin-bottom: 3rem;
+    }
+
+    /* Left Side: Info Card */
+    .contact-info-card {
+        background: linear-gradient(145deg, #fffaf3, #f5eadb);
+        border: 1px solid var(--line);
+        border-radius: 2rem;
+        padding: 2.5rem;
+        box-shadow: 0 14px 40px rgba(57, 43, 25, 0.08);
+    }
+
+    .contact-title {
+        font-family: "Cinzel", serif;
+        font-size: clamp(2rem, 4vw, 3rem);
+        line-height: 1.1;
+        margin-bottom: 1.2rem;
+        color: var(--ink);
+    }
+
+    .contact-lead {
+        color: var(--muted);
+        margin-bottom: 2rem;
+        font-size: 1.05rem;
+        line-height: 1.7;
+    }
+
+    .contact-points {
+        display: grid;
+        gap: 1.2rem;
+    }
+
+    .point {
+        background: var(--card);
+        border: 1px solid var(--line);
+        border-radius: 1.2rem;
+        padding: 1.2rem;
+        display: flex;
+        flex-direction: column;
+        transition: transform 0.3s ease;
+    }
+
+    .point:hover {
+        transform: translateX(10px);
+        border-color: var(--accent);
+    }
+
+    .point strong {
+        font-size: 0.75rem;
+        color: var(--accent);
+        text-transform: uppercase;
+        letter-spacing: 0.1em;
+        margin-bottom: 0.4rem;
+    }
+
+    .point span {
+        color: var(--ink);
+        font-weight: 700;
+        font-size: 1.1rem;
+    }
+
+    /* Right Side: Form Card */
+    .form-card {
+        background: var(--card);
+        border: 1px solid var(--line);
+        border-radius: 2rem;
+        padding: 2.5rem;
+        box-shadow: 0 20px 50px rgba(0, 0, 0, 0.04);
+    }
+
+    .form-card h2 {
+        font-family: "Cinzel", serif;
+        font-size: 1.8rem;
+        margin-bottom: 0.5rem;
+    }
+
+    .form-card p {
+        color: var(--muted);
+        margin-bottom: 2rem;
+    }
+
+    .contact-form {
+        display: grid;
+        gap: 1.5rem;
+    }
+
+    .field-group {
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+
+    .field-group label {
+        font-weight: 700;
+        font-size: 0.85rem;
+        color: var(--ink);
+    }
+
+    .contact-form input,
+    .contact-form textarea {
+        width: 100%;
+        border: 1px solid var(--line);
+        border-radius: 0.8rem;
+        background: #fff;
+        padding: 1rem;
+        font: inherit;
+        color: var(--ink);
+        transition: all 0.3s ease;
+    }
+
+    .contact-form input:focus,
+    .contact-form textarea:focus {
+        outline: none;
+        border-color: var(--accent);
+        box-shadow: 0 0 0 4px rgba(180, 73, 46, 0.1);
+    }
+
+    .contact-form button {
+        border: 0;
+        background: var(--accent);
+        color: #fff;
+        padding: 1.1rem;
+        border-radius: 0.8rem;
+        font-weight: 800;
+        font-size: 1rem;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        margin-top: 1rem;
+    }
+
+    .contact-form button:hover {
+        background: var(--accent-deep);
+        transform: translateY(-3px);
+        box-shadow: 0 10px 20px rgba(180, 73, 46, 0.2);
+    }
+
+    /* FAQ Strip Overhaul */
+    .faq-strip {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 1.5rem;
+    }
+
+    .faq-item {
+        background: var(--card);
+        border: 1px solid var(--line);
+        border-top: 4px solid var(--accent);
+        border-radius: 1.2rem;
+        padding: 1.5rem;
+        transition: all 0.3s ease;
+    }
+
+    .faq-item:hover {
+        box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+    }
+
+    .faq-item h3 {
+        font-family: "Cinzel", serif;
+        font-size: 1.1rem;
+        margin-bottom: 0.6rem;
+        color: var(--ink);
+    }
+
+    @media (max-width: 960px) {
+        .contact-hero { grid-template-columns: 1fr; }
+        .faq-strip { grid-template-columns: 1fr; }
+    }
+</style>
+
+<main class="contact-page">
+    <div class="container">
+        <section class="contact-hero">
+            <article class="contact-info-card">
+                <h1 class="contact-title">Let’s Start a <span style="color:var(--accent)">Chapter</span> Together</h1>
+                <p class="contact-lead">
+                    Whether you're looking for a rare first edition or need help with your current order, our bibliophiles are standing by.
+                </p>
+
+                <div class="contact-points">
+                    <div class="point">
+                        <strong>Direct Email</strong>
+                        <span>hello@bookhaven.com</span>
+                    </div>
+                    <div class="point">
+                        <strong>Concierge Line</strong>
+                        <span>+20 100 123 4567</span>
+                    </div>
+                    <div class="point">
+                        <strong>Library Hours</strong>
+                        <span>Sun - Thu, 9:00 AM - 6:00 PM</span>
+                    </div>
+                </div>
+            </article>
+
+            <article class="form-card">
+                <h2>Send a Message</h2>
+                <p>Expect a response within 24 hours.</p>
+                
+                <form class="contact-form" method="post" action="#">
+                    {% csrf_token %}
+                    
+                    <div class="field-group">
+                        <label for="name">Full Name</label>
+                        <input id="name" name="name" type="text" placeholder="e.g. Khaled Almorse" required />
+                    </div>
+
+                    <div class="field-group">
+                        <label for="email">Email Address</label>
+                        <input id="email" name="email" type="email" placeholder="you@example.com" required />
+                    </div>
+
+                    <div class="field-group">
+                        <label for="message">Message</label>
+                        <textarea id="message" name="message" placeholder="How can we help you today?" required></textarea>
+                    </div>
+
+                    <button type="submit">Send Message</button>
+                </form>
+            </article>
+        </section>
+
+        <h2 style="font-family: 'Cinzel', serif; margin-bottom: 1.5rem; font-size: 1.5rem;">Quick Support</h2>
+        <section class="faq-strip">
+            <article class="faq-item">
+                <h3>Order Support</h3>
+                <p>Track your shipping or request an invoice for your latest library additions.</p>
+            </article>
+            <article class="faq-item">
+                <h3>Author Requests</h3>
+                <p>Suggest a writer for our next monthly feature or signed copy event.</p>
+            </article>
+            <article class="faq-item">
+                <h3>Partnerships</h3>
+                <p>Collaborate with us for book clubs, literary events, or wholesale inquiries.</p>
+            </article>
+        </section>
+    </div>
+</main>
+{% endblock %}

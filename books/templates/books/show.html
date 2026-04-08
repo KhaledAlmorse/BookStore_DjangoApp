@@ -1,0 +1,231 @@
+{% extends 'layouts/base.html' %}
+
+{% block content %}
+{% load static %}
+<style>
+    .details-page {
+        padding: 4rem 0;
+        animation: fadeIn 0.6s ease-out;
+    }
+
+    @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(10px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Breadcrumb style back link */
+    .back-link {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        text-decoration: none;
+        color: var(--muted);
+        font-weight: 600;
+        margin-bottom: 2rem;
+        font-size: 0.9rem;
+        transition: color 0.2s;
+    }
+
+    .back-link:hover { color: var(--accent); }
+
+    .book-layout {
+        display: grid;
+        grid-template-columns: 380px 1fr;
+        gap: 4rem;
+        align-items: start;
+    }
+
+    /* 3D Book Effect */
+    .cover-wrapper {
+        position: sticky;
+        top: 120px;
+        perspective: 1000px;
+    }
+
+    .book-cover-container {
+        width: 100%;
+        border-radius: 4px 12px 12px 4px;
+        box-shadow: 
+            5px 5px 20px rgba(0,0,0,0.2),
+            inset 2px 0 5px rgba(255,255,255,0.3);
+        overflow: hidden;
+        background: #efe4d3;
+        transition: transform 0.5s;
+        transform: rotateY(-10deg); /* Subtle 3D tilt */
+    }
+
+    .book-cover-container:hover {
+        transform: rotateY(0deg);
+    }
+
+    .book-cover {
+        width: 100%;
+        display: block;
+        aspect-ratio: 2/3;
+        object-fit: cover;
+    }
+
+    /* Content Styling */
+    .book-info-header {
+        border-bottom: 2px solid var(--line);
+        padding-bottom: 2rem;
+        margin-bottom: 2rem;
+    }
+
+    .book-title-big {
+        font-family: "Cinzel", serif;
+        font-size: clamp(2.5rem, 5vw, 3.5rem);
+        line-height: 1.1;
+        margin-bottom: 1rem;
+        color: var(--ink);
+    }
+
+    .price-badge {
+        font-size: 2rem;
+        font-family: "Cinzel", serif;
+        color: var(--accent);
+        font-weight: 700;
+    }
+
+    .specs-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+        gap: 1.5rem;
+        margin: 2rem 0;
+    }
+
+    .spec-box {
+        background: white;
+        border: 1px solid var(--line);
+        padding: 1.2rem;
+        border-radius: 1rem;
+        transition: border-color 0.3s;
+    }
+
+    .spec-box:hover { border-color: var(--glow); }
+
+    .spec-label {
+        font-size: 0.75rem;
+        text-transform: uppercase;
+        letter-spacing: 0.1em;
+        color: var(--muted);
+        margin-bottom: 0.5rem;
+        display: block;
+    }
+
+    .spec-value {
+        font-weight: 700;
+        color: var(--ink);
+    }
+
+    .long-description {
+        font-size: 1.1rem;
+        color: var(--muted);
+        line-height: 1.8;
+        margin-bottom: 3rem;
+    }
+
+    .action-bar {
+        display: flex;
+        gap: 1rem;
+        align-items: center;
+        padding-top: 2rem;
+        border-top: 1px solid var(--line);
+    }
+
+    .buy-btn {
+        background: var(--ink);
+        color: white;
+        padding: 1.2rem 3rem;
+        border-radius: 50px;
+        text-decoration: none;
+        font-weight: 700;
+        transition: transform 0.2s, background 0.2s;
+    }
+
+    .buy-btn:hover {
+        background: var(--accent);
+        transform: translateY(-3px);
+    }
+
+    @media (max-width: 900px) {
+        .book-layout { grid-template-columns: 1fr; gap: 2rem; }
+        .cover-wrapper { position: static; max-width: 300px; margin: 0 auto; }
+        .book-title-big { font-size: 2rem; }
+    }
+</style>
+
+<main class="details-page">
+    <div class="container">
+        <a href="{% url 'books.home' %}" class="back-link">
+            <span>←</span> Back to Collection
+        </a>
+
+        {% if book %}
+        <section class="book-layout">
+            <div class="cover-wrapper">
+                <div class="book-cover-container">
+                    {% if book.image %}
+                    <img class="book-cover" src="{% static 'books/images/'|add:book.image %}" alt="{{ book.title }}">
+                    {% else %}
+                    <div style="aspect-ratio: 2/3; display: grid; place-items: center; background: #ddd; color: #888;">
+                        No Cover Available
+                    </div>
+                    {% endif %}
+                </div>
+                <div style="margin-top: 1.5rem; text-align: center;">
+                    <span class="meta-pill" style="background: var(--glow); color: var(--ink);">Available Now</span>
+                </div>
+            </div>
+
+            <div class="book-content">
+                <header class="book-info-header">
+                    <h1 class="book-title-big">{{ book.title }}</h1>
+                    <div style="display: flex; justify-content: space-between; align-items: center;">
+                        <p style="font-size: 1.2rem; color: var(--muted); font-weight: 500;">By Featured Author</p>
+                        <span class="price-badge">${{ book.price }}</span>
+                    </div>
+                </header>
+
+                <div class="long-description">
+                    <h3 style="font-family: 'Cinzel', serif; margin-bottom: 1rem; color: var(--ink);">Synopsis</h3>
+                    {{ book.breif }}
+                </div>
+
+                <div class="specs-grid">
+                    <div class="spec-box">
+                        <span class="spec-label">Reference ID</span>
+                        <span class="spec-value">#BK-{{ book.id }}</span>
+                    </div>
+                    <div class="spec-box">
+                        <span class="spec-label">Length</span>
+                        <span class="spec-value">{{ book.noOfPages }} Pages</span>
+                    </div>
+                    <div class="spec-box">
+                        <span class="spec-label">Format</span>
+                        <span class="spec-value">Hardcover</span>
+                    </div>
+                    <div class="spec-box">
+                        <span class="spec-label">Language</span>
+                        <span class="spec-value">English</span>
+                    </div>
+                </div>
+
+                <footer class="action-bar">
+                    <a href="#" class="buy-btn">Purchase Copy</a>
+                    <button style="background: none; border: 1px solid var(--line); padding: 1.1rem 1.5rem; border-radius: 50px; cursor: pointer; font-weight: 700;">
+                        Add to Wishlist
+                    </button>
+                </footer>
+            </div>
+        </section>
+        {% else %}
+        <div style="text-align: center; padding: 5rem 0;">
+            <h2 class="page-title">Book Not Found</h2>
+            <p>The volume you're looking for has been misplaced in our archives.</p>
+            <a href="{% url 'books.home' %}" class="cta" style="margin-top: 2rem;">Return Home</a>
+        </div>
+        {% endif %}
+    </div>
+</main>
+{% endblock %}
