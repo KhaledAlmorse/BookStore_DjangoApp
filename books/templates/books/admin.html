@@ -1,0 +1,173 @@
+{% extends 'layouts/base.html' %}
+
+{% block content %}
+<style>
+    .admin-container {
+        padding: 3rem 0;
+        animation: fadeIn 0.4s ease-out;
+    }
+
+    /* Admin Summary Bar */
+    .admin-stats {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 1.5rem;
+        margin-bottom: 2.5rem;
+    }
+
+    .stat-card {
+        background: white;
+        border: 1px solid var(--line);
+        padding: 1.5rem;
+        border-radius: 1rem;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .stat-card span { font-size: 0.8rem; color: var(--muted); text-transform: uppercase; font-weight: 700; }
+    .stat-card strong { font-size: 1.8rem; color: var(--ink); font-family: "Cinzel", serif; }
+
+    /* Table Styling */
+    .table-wrapper {
+        background: white;
+        border: 1px solid var(--line);
+        border-radius: 1.2rem;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.03);
+        overflow: hidden;
+    }
+
+    .admin-table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 0.95rem;
+    }
+
+    .admin-table thead {
+        background: #fcfaf7;
+        border-bottom: 2px solid var(--line);
+    }
+
+    .admin-table th {
+        padding: 1.2rem 1rem;
+        text-align: left;
+        color: var(--muted);
+        font-weight: 700;
+        text-transform: uppercase;
+        font-size: 0.75rem;
+        letter-spacing: 0.05em;
+    }
+
+    .admin-table td {
+        padding: 1rem;
+        border-bottom: 1px solid #f0f0f0;
+        vertical-align: middle;
+    }
+
+    .admin-table tr:hover {
+        background-color: #fffdfa;
+    }
+
+    /* Action Buttons */
+    .btn-action {
+        display: inline-flex;
+        align-items: center;
+        padding: 0.5rem 0.8rem;
+        border-radius: 0.6rem;
+        text-decoration: none;
+        font-size: 0.85rem;
+        font-weight: 600;
+        transition: all 0.2s;
+        border: 1px solid var(--line);
+        background: white;
+        color: var(--ink);
+    }
+
+    .btn-action:hover {
+        border-color: var(--accent);
+        color: var(--accent);
+        transform: translateY(-2px);
+    }
+
+    .btn-delete {
+        background: #fff5f5;
+        color: #c53030;
+        border-color: #feb2b2;
+    }
+
+    .btn-delete:hover {
+        background: #c53030;
+        color: white;
+        border-color: #c53030;
+    }
+
+    .book-id-badge {
+        font-family: monospace;
+        background: #eee;
+        padding: 0.2rem 0.4rem;
+        border-radius: 4px;
+        color: #666;
+    }
+
+    @keyframes fadeIn {
+        from { opacity: 0; } to { opacity: 1; }
+    }
+</style>
+
+<main class="container admin-container">
+    <div style="display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 2rem;">
+        <div>
+            <h1 style="font-family: 'Cinzel', serif; font-size: 2.5rem; margin-bottom: 0.5rem;">Inventory</h1>
+            <p style="color: var(--muted);">Manage your library's collection and details.</p>
+        </div>
+      <a href="{% url 'books.create' %}" class="cta" style="padding: 0.8rem 1.8rem; border-radius: 0.8rem; text-decoration: none; display: inline-flex; align-items: center; gap: 0.6rem; font-weight: 800; box-shadow: 0 4px 14px rgba(180, 73, 46, 0.2);">
+                <span style="font-size: 1.3rem; line-height: 0;">+</span> Add New Book
+            </a>
+    </div>
+
+
+    <div class="table-wrapper">
+        <table class="admin-table">
+            <thead>
+                <tr>
+                    <th>Ref</th>
+                    <th>Book Title</th>
+                    <th>Pages</th>
+                    <th>Price</th>
+                    <th style="text-align: right;">Management</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for book in books %}
+                <tr>
+                    <td><span class="book-id-badge">#{{ book.id }}</span></td>
+                    <td>
+                        <div style="font-weight: 700; color: var(--ink);">{{ book.title }}</div>
+                    </td>
+                    <td>{{ book.no_of_page }} <span style="font-size: 0.8rem; color: var(--muted);">pp</span></td>
+                    <td style="font-weight: 700; color: var(--accent-deep);">${{ book.price }}</td>
+                    <td>
+                        <div style="display: flex; gap: 0.5rem; justify-content: flex-end;">
+                            <a href="{% url 'books.show' book.id %}" class="btn-action" title="View">View</a>
+                            <a href="{% url 'books.update' book.id %}" class="btn-action" title="Edit">Update</a>
+                            <form method="post" action="{% url 'books.delete' book.id %}" style="display: inline;">
+                                {% csrf_token %}
+                                <button type="submit" class="btn-action btn-delete" onclick="return confirm('Archive this book?');">
+                                    Delete
+                                </button>
+                            </form>
+                        </div>
+                    </td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="5" style="padding: 4rem 1rem; text-align: center;">
+                        <div style="font-size: 3rem; margin-bottom: 1rem;">📚</div>
+                        <p style="color: var(--muted); font-size: 1.1rem;">Your library is currently empty.</p>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</main>
+{% endblock %}

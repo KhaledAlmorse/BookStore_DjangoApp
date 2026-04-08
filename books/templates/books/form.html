@@ -1,0 +1,176 @@
+{% extends 'layouts/base.html' %}
+
+{% block content %}
+<style>
+    .form-page {
+        padding: 4rem 0 6rem;
+        background: radial-gradient(circle at top right, #fffaf3 0%, var(--bg) 100%);
+        min-height: 80vh;
+    }
+
+    .form-wrapper {
+        max-width: 780px;
+        margin: 0 auto;
+    }
+
+    .form-card {
+        background: white;
+        border: 1px solid var(--line);
+        border-radius: 2rem;
+        padding: 3.5rem;
+        box-shadow: 0 20px 50px rgba(57, 43, 25, 0.05);
+        position: relative;
+    }
+
+    /* Elegant bookmark-style label for the form */
+    .form-card::after {
+        content: "";
+        position: absolute;
+        top: -1px;
+        right: 40px;
+        width: 30px;
+        height: 50px;
+        background: var(--accent);
+        clip-path: polygon(0 0, 100% 0, 100% 100%, 50% 85%, 0 100%);
+    }
+
+    .form-header {
+        margin-bottom: 2.5rem;
+        border-bottom: 1px solid var(--line);
+        padding-bottom: 1.5rem;
+    }
+
+    .form-header h1 {
+        font-family: 'Cinzel', serif;
+        font-size: 2.5rem;
+        color: var(--ink);
+        margin: 0;
+    }
+
+    /* Targeting Django's auto-generated widgets */
+    .field-container {
+        display: grid;
+        gap: 0.6rem;
+        margin-bottom: 1.8rem;
+    }
+
+    .field-container label {
+        font-weight: 800;
+        font-size: 0.85rem;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        color: var(--muted);
+    }
+
+    /* This CSS targets the inputs rendered by {{ field }} */
+    .field-container input, 
+    .field-container textarea, 
+    .field-container select {
+        width: 100%;
+        padding: 1rem;
+        border: 1px solid var(--line);
+        border-radius: 0.8rem;
+        font-family: inherit;
+        font-size: 1rem;
+        transition: all 0.3s ease;
+        background: #fdfdfd;
+    }
+
+    .field-container input:focus, 
+    .field-container textarea:focus {
+        outline: none;
+        border-color: var(--accent);
+        box-shadow: 0 0 0 4px rgba(180, 73, 46, 0.1);
+        background: white;
+    }
+
+    .error-text {
+        color: #a11a1a;
+        font-size: 0.85rem;
+        font-weight: 600;
+        margin-top: 0.3rem;
+        display: flex;
+        align-items: center;
+        gap: 0.3rem;
+    }
+
+    .form-actions {
+        display: flex;
+        align-items: center;
+        gap: 1.5rem;
+        margin-top: 2rem;
+        padding-top: 2rem;
+        border-top: 1px solid var(--line);
+    }
+
+    .submit-btn {
+        background: var(--ink);
+        color: white;
+        border: none;
+        padding: 1.1rem 2.5rem;
+        border-radius: 50px;
+        font-weight: 700;
+        cursor: pointer;
+        transition: all 0.3s;
+    }
+
+    .submit-btn:hover {
+        background: var(--accent);
+        transform: translateY(-2px);
+        box-shadow: 0 10px 20px rgba(180, 73, 46, 0.2);
+    }
+
+    .cancel-link {
+        text-decoration: none;
+        color: var(--muted);
+        font-weight: 600;
+        font-size: 0.95rem;
+        transition: color 0.2s;
+    }
+
+    .cancel-link:hover { color: var(--ink); }
+
+</style>
+
+<main class="form-page">
+    <div class="container form-wrapper">
+        <section class="form-card">
+            <form method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+
+                {% for field in form %}
+                    <div class="field-container">
+                        <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+                        
+                        {# Django renders the input here #}
+                        {{ field }}
+
+                        {% if field.help_text %}
+                            <small style="color: var(--muted); font-style: italic;">{{ field.help_text }}</small>
+                        {% endif %}
+
+                        {% if field.errors %}
+                            <div class="error-text">
+                                <span>⚠️</span> {{ field.errors|striptags }}
+                            </div>
+                        {% endif %}
+                    </div>
+                {% endfor %}
+
+                <div class="form-actions">
+                    <button type="submit" class="submit-btn">
+                        {{ submit_label|default:"Save Changes" }}
+                    </button>
+                    <a href="{% url 'books.admin' %}" class="cancel-link">
+                        Discard & Return
+                    </a>
+                </div>
+            </form>
+        </section>
+        
+        <p style="text-align: center; margin-top: 2.5rem; color: var(--muted); font-size: 0.85rem;">
+            Authorized Access Only • Book Haven Management System 2026
+        </p>
+    </div>
+</main>
+{% endblock %}
