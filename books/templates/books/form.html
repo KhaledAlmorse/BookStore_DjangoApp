@@ -3,27 +3,26 @@
 {% block content %}
 <style>
     .form-page {
-        padding: 4rem 0 6rem;
+        padding: 4rem 0 5rem;
         background: radial-gradient(circle at top right, #fffaf3 0%, var(--bg) 100%);
         min-height: 80vh;
     }
 
     .form-wrapper {
-        max-width: 780px;
+        max-width: 760px;
         margin: 0 auto;
     }
 
-    .form-card {
+    .create-card {
         background: white;
         border: 1px solid var(--line);
         border-radius: 2rem;
-        padding: 3.5rem;
+        padding: 2.4rem;
         box-shadow: 0 20px 50px rgba(57, 43, 25, 0.05);
         position: relative;
     }
 
-    /* Elegant bookmark-style label for the form */
-    .form-card::after {
+    .create-card::after {
         content: "";
         position: absolute;
         top: -1px;
@@ -47,14 +46,20 @@
         margin: 0;
     }
 
-    /* Targeting Django's auto-generated widgets */
-    .field-container {
-        display: grid;
-        gap: 0.6rem;
-        margin-bottom: 1.8rem;
+    .subtitle {
+        margin-top: 0.5rem;
+        color: var(--muted);
+        font-size: 0.95rem;
     }
 
-    .field-container label {
+    .create-card form p,
+    .create-card form > div {
+        margin: 0 0 1.2rem;
+    }
+
+    .create-card label {
+        display: inline-block;
+        margin-bottom: 0.5rem;
         font-weight: 800;
         font-size: 0.85rem;
         text-transform: uppercase;
@@ -62,10 +67,9 @@
         color: var(--muted);
     }
 
-    /* This CSS targets the inputs rendered by {{ field }} */
-    .field-container input, 
-    .field-container textarea, 
-    .field-container select {
+    .create-card input,
+    .create-card textarea,
+    .create-card select {
         width: 100%;
         padding: 1rem;
         border: 1px solid var(--line);
@@ -74,27 +78,51 @@
         font-size: 1rem;
         transition: all 0.3s ease;
         background: #fdfdfd;
+        color: var(--ink);
+        box-sizing: border-box;
     }
 
-    .field-container input:focus, 
-    .field-container textarea:focus {
+    .create-card input:hover,
+    .create-card textarea:hover,
+    .create-card select:hover {
+        background: #fdfdfd;
+        color: var(--ink);
+    }
+
+    .create-card input:focus,
+    .create-card textarea:focus,
+    .create-card select:focus {
         outline: none;
         border-color: var(--accent);
         box-shadow: 0 0 0 4px rgba(180, 73, 46, 0.1);
-        background: white;
+        background: #fdfdfd;
+        color: var(--ink);
     }
 
-    .error-text {
+    .create-card textarea {
+        min-height: 130px;
+        resize: vertical;
+    }
+
+    .create-card input[type="checkbox"] {
+        width: auto;
+        margin-right: 0.45rem;
+    }
+
+    .create-card .errorlist,
+    .create-card .errorlist li {
+        list-style: none;
+        margin: 0.4rem 0 0;
+        padding: 0;
+    }
+
+    .create-card .errorlist li {
         color: #a11a1a;
         font-size: 0.85rem;
         font-weight: 600;
-        margin-top: 0.3rem;
-        display: flex;
-        align-items: center;
-        gap: 0.3rem;
     }
 
-    .form-actions {
+    .actions {
         display: flex;
         align-items: center;
         gap: 1.5rem;
@@ -103,71 +131,83 @@
         border-top: 1px solid var(--line);
     }
 
-    .submit-btn {
+    .btn {
+        text-decoration: none;
+        border-radius: 999px;
+        padding: 0.9rem 1.7rem;
+        font-weight: 700;
+        font-size: 0.95rem;
+        transition: all 0.25s ease;
+        cursor: pointer;
+    }
+
+    .btn-primary {
         background: var(--ink);
         color: white;
-        border: none;
-        padding: 1.1rem 2.5rem;
-        border-radius: 50px;
-        font-weight: 700;
-        cursor: pointer;
-        transition: all 0.3s;
+        border: 1px solid var(--ink);
     }
 
-    .submit-btn:hover {
+    .btn-primary:hover {
         background: var(--accent);
+        border-color: var(--accent);
         transform: translateY(-2px);
-        box-shadow: 0 10px 20px rgba(180, 73, 46, 0.2);
+        box-shadow: 0 10px 20px rgba(180, 73, 46, 0.18);
     }
 
-    .cancel-link {
-        text-decoration: none;
+    .btn-ghost {
         color: var(--muted);
-        font-weight: 600;
-        font-size: 0.95rem;
-        transition: color 0.2s;
+        border: 1px solid var(--line);
+        background: white;
     }
 
-    .cancel-link:hover { color: var(--ink); }
+    .btn-ghost:hover {
+        color: var(--ink);
+        border-color: #d7c8af;
+        background: #fffcf6;
+    }
 
+    @media (max-width: 640px) {
+        .create-card {
+            padding: 1.5rem;
+            border-radius: 1.2rem;
+        }
+
+        .form-header h1 {
+            font-size: 1.9rem;
+        }
+
+        .actions {
+            flex-direction: column;
+            align-items: stretch;
+            gap: 0.8rem;
+        }
+
+        .btn {
+            text-align: center;
+        }
+    }
 </style>
 
 <main class="form-page">
     <div class="container form-wrapper">
-        <section class="form-card">
-            <form method="post" enctype="multipart/form-data">
-                {% csrf_token %}
-
-                {% for field in form %}
-                    <div class="field-container">
-                        <label for="{{ field.id_for_label }}">{{ field.label }}</label>
-                        
-                        {# Django renders the input here #}
-                        {{ field }}
-
-                        {% if field.help_text %}
-                            <small style="color: var(--muted); font-style: italic;">{{ field.help_text }}</small>
-                        {% endif %}
-
-                        {% if field.errors %}
-                            <div class="error-text">
-                                <span>⚠️</span> {{ field.errors|striptags }}
-                            </div>
-                        {% endif %}
-                    </div>
-                {% endfor %}
-
-                <div class="form-actions">
-                    <button type="submit" class="submit-btn">
-                        {{ submit_label|default:"Save Changes" }}
-                    </button>
-                    <a href="{% url 'books.admin' %}" class="cancel-link">
-                        Discard & Return
-                    </a>
+        <section class="create-wrapper">
+            <div class="create-card">
+                <div class="form-header">
+                    <h1>{{ form_title }}</h1>
+                    <p class="subtitle">Fill the form below.</p>
                 </div>
-            </form>
+
+                <form method="POST" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    {{form}}
+                    <div class="actions">
+                        <input class="btn btn-primary" type="submit" value="{{ submit_label }}">
+                        <a class="btn btn-ghost" href="{% url 'books.admin' %}">Cancel</a>
+                    </div>
+                </form>
+            </div>
         </section>
-        
+
         <p style="text-align: center; margin-top: 2.5rem; color: var(--muted); font-size: 0.85rem;">
             Authorized Access Only • Book Haven Management System 2026
         </p>
