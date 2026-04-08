@@ -44,7 +44,11 @@
             <article class="book">
                 <span class="pill">Library Edition</span>
                 <div style="height: 320px; overflow: hidden; border-radius: 0.6rem; margin: 1rem 0;">
-                    <img src="{% static 'books/images/'|add:book.image %}" alt="{{ book.title }} cover" style="width: 100%; height: 100%; object-fit: cover;">
+                    {% if book.image %}
+                    <img src="{{ book.image.url }}" alt="{{ book.title }} cover" style="width: 100%; height: 100%; object-fit: cover;">
+                    {% else %}
+                    <img src="{% static 'books/images/1.jpg' %}" alt="{{ book.title }} cover" style="width: 100%; height: 100%; object-fit: cover;">
+                    {% endif %}
                 </div>
                 <h4>{{ book.title }}</h4>
                 <p class="book-summary">{{ book.brief }}</p>

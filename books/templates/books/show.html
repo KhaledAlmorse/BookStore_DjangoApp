@@ -166,11 +166,9 @@
             <div class="cover-wrapper">
                 <div class="book-cover-container">
                     {% if book.image %}
-                    <img class="book-cover" src="{% static 'books/images/'|add:book.image %}" alt="{{ book.title }}">
+                    <img class="book-cover" src="{{ book.image.url }}" alt="{{ book.title }}">
                     {% else %}
-                    <div style="aspect-ratio: 2/3; display: grid; place-items: center; background: #ddd; color: #888;">
-                        No Cover Available
-                    </div>
+                    <img class="book-cover" src="{% static 'books/images/1.jpg' %}" alt="{{ book.title }}">
                     {% endif %}
                 </div>
                 <div style="margin-top: 1.5rem; text-align: center;">

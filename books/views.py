@@ -26,7 +26,7 @@ def admin_books(request):
 
 def create_book(request):
     if request.method == "POST":
-        form = BookForm(request.POST)
+        form = BookForm(request.POST, request.FILES)
         if form.is_valid():
             form.save()
             return redirect("books.admin")
@@ -44,7 +44,7 @@ def update_book(request, id):
     book = get_object_or_404(Book, id=id)
 
     if request.method == "POST":
-        form = BookForm(request.POST, instance=book)
+        form = BookForm(request.POST, request.FILES, instance=book)
         if form.is_valid():
             form.save()
             return redirect("books.admin")
