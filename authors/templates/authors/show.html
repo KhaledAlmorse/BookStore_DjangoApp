@@ -1,0 +1,308 @@
+{% extends 'layouts/base.html' %}
+
+{% block content %}
+<style>
+    .details-page {
+        padding: 5rem 0;
+        min-height: 85vh;
+        animation: fadeIn 0.6s ease-out;
+    }
+
+    .details-card {
+        max-width: 1000px;
+        margin: 0 auto;
+        background: var(--card);
+        border: 1px solid var(--line);
+        border-radius: 2.5rem;
+        overflow: hidden;
+        box-shadow: 0 30px 60px rgba(34, 25, 14, 0.08);
+        position: relative;
+    }
+
+    /* Decorative Top Bar */
+    .card-accent-line {
+        height: 6px;
+        background: linear-gradient(90deg, var(--accent), var(--glow));
+        width: 100%;
+    }
+
+    /* Header Section */
+    .author-header {
+        padding: 4rem 4rem 3rem;
+        display: grid;
+        grid-template-columns: auto 1fr auto;
+        gap: 3rem;
+        align-items: center;
+        border-bottom: 1px solid var(--line);
+    }
+
+    .author-avatar-wrapper {
+        position: relative;
+    }
+
+    .author-avatar {
+        width: 140px;
+        height: 140px;
+        background: var(--bg);
+        border: 1px solid var(--line);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-family: 'Cinzel', serif;
+        font-size: 3.5rem;
+        color: var(--accent);
+        box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+    }
+
+    .status-indicator {
+        position: absolute;
+        bottom: 8px;
+        right: 8px;
+        width: 20px;
+        height: 20px;
+        background: #27ae60;
+        border: 4px solid var(--card);
+        border-radius: 50%;
+    }
+
+    .author-main-info h1 {
+        font-family: 'Cinzel', serif;
+        font-size: clamp(2rem, 4vw, 3.2rem);
+        color: var(--ink);
+        line-height: 1.1;
+        margin-bottom: 0.5rem;
+    }
+
+    .author-stats-mini {
+        display: flex;
+        gap: 2rem;
+        margin-top: 1.5rem;
+    }
+
+    .mini-stat {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .mini-stat label {
+        font-size: 0.7rem;
+        text-transform: uppercase;
+        letter-spacing: 0.1em;
+        color: var(--muted);
+        font-weight: 700;
+    }
+
+    .mini-stat value {
+        font-family: 'Cinzel', serif;
+        font-weight: 700;
+        color: var(--ink);
+    }
+
+    /* Body Layout */
+    .details-body {
+        padding: 4rem;
+        display: grid;
+        grid-template-columns: 1fr 320px;
+        gap: 4rem;
+    }
+
+    .bio-text {
+        font-size: 1.1rem;
+        color: var(--ink);
+        line-height: 1.9;
+        opacity: 0.9;
+    }
+
+    /* Elegant Drop Cap */
+    .bio-text::first-letter {
+        float: left;
+        font-family: 'Cinzel', serif;
+        font-size: 4.2rem;
+        line-height: 0.8;
+        padding: 0.5rem 0.8rem 0 0;
+        color: var(--accent);
+    }
+
+    /* Sidebar Published Works */
+    .sidebar-title {
+        font-family: 'Cinzel', serif;
+        font-size: 1.2rem;
+        margin-bottom: 1.5rem;
+        padding-bottom: 0.5rem;
+        border-bottom: 2px solid var(--glow);
+        display: inline-block;
+    }
+
+    .book-list-sidebar {
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+    }
+
+    .sidebar-book-card {
+        padding: 1rem;
+        background: var(--bg);
+        border: 1px solid var(--line);
+        border-radius: 1rem;
+        text-decoration: none;
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        transition: 0.3s;
+    }
+
+    .sidebar-book-card:hover {
+        border-color: var(--accent);
+        background: white;
+        transform: translateX(8px);
+    }
+
+    .sidebar-book-icon {
+        width: 45px;
+        height: 60px;
+        background: var(--line);
+        border-radius: 4px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.2rem;
+        box-shadow: 2px 4px 8px rgba(0,0,0,0.05);
+    }
+
+    /* Footer Actions */
+    .details-footer {
+        padding: 2rem 4rem;
+        background: #fafafa;
+        border-top: 1px solid var(--line);
+        display: flex;
+        justify-content: space-between;
+    }
+
+    .btn-outline {
+        padding: 0.8rem 1.5rem;
+        border: 1px solid var(--line);
+        border-radius: 50px;
+        text-decoration: none;
+        color: var(--muted);
+        font-weight: 700;
+        transition: 0.3s;
+    }
+
+    .btn-outline:hover {
+        background: var(--ink);
+        color: white;
+        border-color: var(--ink);
+    }
+
+    .btn-filled {
+        padding: 0.8rem 2rem;
+        background: var(--accent);
+        color: white;
+        border-radius: 50px;
+        text-decoration: none;
+        font-weight: 700;
+        box-shadow: 0 10px 20px rgba(180, 73, 46, 0.2);
+        transition: 0.3s;
+    }
+
+    .btn-filled:hover {
+        transform: translateY(-3px);
+        background: var(--accent-deep);
+    }
+
+    @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(20px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+
+    @media (max-width: 900px) {
+        .details-body { grid-template-columns: 1fr; }
+        .author-header { grid-template-columns: 1fr; text-align: center; }
+        .author-avatar-wrapper { margin: 0 auto; }
+        .author-stats-mini { justify-content: center; }
+    }
+</style>
+
+<main class="container details-page">
+    <article class="details-card">
+        <div class="card-accent-line"></div>
+        
+        <header class="author-header">
+            <div class="author-avatar-wrapper">
+                <div class="author-avatar">
+                    {{ author.name|slice:":1" }}
+                </div>
+                <div class="status-indicator" title="Archived Contributor"></div>
+            </div>
+
+            <div class="author-main-info">
+                <span class="pill" style="margin-bottom: 1rem;">{{ author.gender|title }}</span>
+                <h1>{{ author.name }}</h1>
+                <p style="color: var(--accent); font-weight: 600; letter-spacing: 0.05em;">{{ author.email }}</p>
+                
+                <div class="author-stats-mini">
+                    <div class="mini-stat">
+                        <label>Collection</label>
+                        <value>{{ author.books.count }} Volumes</value>
+                    </div>
+                    <div class="mini-stat">
+                        <label>Registry ID</label>
+                        <value>#AU-0{{ author.id }}</value>
+                    </div>
+                </div>
+            </div>
+
+            <div class="header-action">
+                <a href="mailto:{{ author.email }}" class="btn-outline" style="display: flex; gap: 0.5rem; align-items: center;">
+                    <svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg>
+                    Contact
+                </a>
+            </div>
+        </header>
+
+        <div class="details-body">
+            <section class="bio-content">
+                <h2 class="sidebar-title">Biography</h2>
+                <div class="bio-text">
+                    {{ author.bio|default:"In the quiet halls of the Book Haven, this author's story remains whispered through their works rather than written in a ledger. A provider of worlds and a weaver of words, they have yet to submit a formal biography to the archives." }}
+                </div>
+            </section>
+
+            <aside class="author-sidebar">
+                <h2 class="sidebar-title">Bibliography</h2>
+                <div class="book-list-sidebar">
+                    {% for book in author.books.all %}
+                    <a href="{% url 'books.show' book.id %}" class="sidebar-book-card">
+                        <div class="sidebar-book-icon">
+                            {% if book.image %}
+                                <img src="{{ book.image.url }}" style="width:100%; height:100%; object-fit:cover; border-radius:4px;">
+                            {% else %}
+                                📖
+                            {% endif %}
+                        </div>
+                        <div style="overflow: hidden;">
+                            <div style="font-weight: 700; color: var(--ink); font-size: 0.9rem; white-space: nowrap; text-overflow: ellipsis; overflow: hidden;">
+                                {{ book.title }}
+                            </div>
+                            <div style="font-size: 0.75rem; color: var(--muted);">View Details →</div>
+                        </div>
+                    </a>
+                    {% empty %}
+                    <p style="color: var(--muted); font-style: italic; font-size: 0.9rem;">The shelves are waiting for this author's first entry.</p>
+                    {% endfor %}
+                </div>
+            </aside>
+        </div>
+
+        <footer class="details-footer">
+            <a href="{% url 'authors.index' %}" class="btn-outline">
+                ← Return to Registry
+            </a>
+            <a href="{% url 'authors.update' author.id %}" class="btn-filled">
+                Edit Author Record
+            </a>
+        </footer>
+    </article>
+</main>
+{% endblock %}
