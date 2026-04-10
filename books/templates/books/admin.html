@@ -150,7 +150,13 @@
                     </td>
                     <td>{{ book.no_of_pages }} <span style="font-size: 0.8rem; color: var(--muted);">p</span></td>
                     <td style="font-weight: 700; color: var(--accent-deep);">${{ book.price }}</td>
-                    <td>{{ book.author.name }}</td>
+                    <td>
+                        {% for author in book.authors.all %}
+                            {{ author.name }}{% if not forloop.last %}, {% endif %}
+                        {% empty %}
+                            -
+                        {% endfor %}
+                    </td>
                     <td>{{ book.created_at|date:"M d, Y" }}</td>
                     <td>{{ book.updated_at|date:"M d, Y" }}</td>
                     <td>

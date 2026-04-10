@@ -20,7 +20,7 @@ def show(request, id):
 
 
 def admin_books(request):
-    books = Book.objects.all().order_by("id")
+    books = Book.objects.prefetch_related("authors").order_by("id")
     return render(request, "books/admin.html", context={"books": books})
 
 
