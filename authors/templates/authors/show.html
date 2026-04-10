@@ -243,34 +243,28 @@
                 
                 <div class="author-stats-mini">
                     <div class="mini-stat">
-                        <label>Collection</label>
+                        <label>Books</label>
                         <value>{{ author.books.count }} Volumes</value>
                     </div>
                     <div class="mini-stat">
-                        <label>Registry ID</label>
-                        <value>#AU-0{{ author.id }}</value>
+                        <label>Author ID</label>
+                        <value>#{{ author.id }}</value>
                     </div>
                 </div>
             </div>
 
-            <div class="header-action">
-                <a href="mailto:{{ author.email }}" class="btn-outline" style="display: flex; gap: 0.5rem; align-items: center;">
-                    <svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg>
-                    Contact
-                </a>
-            </div>
         </header>
 
         <div class="details-body">
             <section class="bio-content">
                 <h2 class="sidebar-title">Biography</h2>
                 <div class="bio-text">
-                    {{ author.bio|default:"In the quiet halls of the Book Haven, this author's story remains whispered through their works rather than written in a ledger. A provider of worlds and a weaver of words, they have yet to submit a formal biography to the archives." }}
+                    {{ author.bio|default:"In the quiet halls of the Book Haven." }}
                 </div>
             </section>
 
             <aside class="author-sidebar">
-                <h2 class="sidebar-title">Bibliography</h2>
+                <h2 class="sidebar-title">Books</h2>
                 <div class="book-list-sidebar">
                     {% for book in author.books.all %}
                     <a href="{% url 'books.show' book.id %}" class="sidebar-book-card">
@@ -289,7 +283,7 @@
                         </div>
                     </a>
                     {% empty %}
-                    <p style="color: var(--muted); font-style: italic; font-size: 0.9rem;">The shelves are waiting for this author's first entry.</p>
+                    <p style="color: var(--muted); font-style: italic; font-size: 0.9rem;"> waiting for this author's first entry.</p>
                     {% endfor %}
                 </div>
             </aside>
