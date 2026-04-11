@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'authors.apps.AuthorsConfig',
     'contactUs.apps.ContactusConfig',
     'aboutUs.apps.AboutusConfig',
+    "rest_framework"
 ]
 
 MIDDLEWARE = [
