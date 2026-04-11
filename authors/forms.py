@@ -7,7 +7,6 @@ class AuthorModelForm(forms.ModelForm):
     GENDER_CHOICES = [
         ("male", "Male"),
         ("female", "Female"),
-        ("other", "Other"),
     ]
     gender = forms.ChoiceField(choices=GENDER_CHOICES)
 
